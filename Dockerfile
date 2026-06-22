@@ -1,11 +1,11 @@
 # Build stage
 FROM eclipse-temurin:25-jdk AS build
+RUN apt-get update && apt-get install -y --no-install-recommends maven && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
-RUN chmod +x mvnw && ./mvnw dependency:go-offline --no-transfer-progress
+COPY pom.xml ./
+RUN mvn dependency:go-offline --no-transfer-progress
 COPY src ./src
-RUN ./mvnw package -DskipTests --no-transfer-progress
+RUN mvn package -DskipTests --no-transfer-progress
 
 # Runtime stage
 FROM eclipse-temurin:25-jre
