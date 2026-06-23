@@ -10,15 +10,20 @@ import java.util.stream.Collectors;
 
 /**
  * Orchestration service that wraps MCP client calls to the upstream mcp-server.
- * Each public method corresponds to one MCP tool exposed by the server.
+ * Spring AI 1.0.x auto-configures one McpSyncClient per named SSE connection as
+ * a List<McpSyncClient> bean — we pick the first (and only) entry.
  */
 @Service
 public class McpOrchestrationService {
 
     private final McpSyncClient mcpSyncClient;
 
-    public McpOrchestrationService(McpSyncClient mcpSyncClient) {
-        this.mcpSyncClient = mcpSyncClient;
+    public McpOrchestrationService(List<McpSyncClient> mcpSyncClients) {
+        if (mcpSyncClients == null || mcpSyncClients.isEmpty()) {
+            throw new IllegalStateException(
+                "No McpSyncClient beans found. Check spring.ai.mcp.client.sse.connections configuration.");
+        }
+        this.mcpSyncClient = mcpSyncClients.get(0);
     }
 
     /** Lists every tool registered on the remote MCP server. */

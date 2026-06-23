@@ -1,20 +1,20 @@
-name: mcp-server — Build & Push
+name: mcp-client — Build & Push
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - "mcp-server/**"
-      - ".github/workflows/build.yml"
+      - "mcp-client/**"
+      - ".github/workflows/mcp-client-build.yml"
   pull_request:
     branches: [ "main" ]
     paths:
-      - "mcp-server/**"
-      - ".github/workflows/build.yml"
+      - "mcp-client/**"
+      - ".github/workflows/mcp-client-build.yml"
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: mcp-server
+  IMAGE_NAME: mcp-client
 
 jobs:
   # ── 1. Build & test ──────────────────────────────────────────────────────────
@@ -34,14 +34,14 @@ jobs:
           cache: maven
 
       - name: Build & test
-        working-directory: mcp-server
+        working-directory: mcp-client
         run: mvn verify --no-transfer-progress
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mcp-server-jar
-          path: mcp-server/target/*.jar
+          name: mcp-client-jar
+          path: mcp-client/target/*.jar
           if-no-files-found: error
 
   # ── 2. Docker build & push ────────────────────────────────────────────────────
@@ -78,8 +78,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: mcp-server
-          file: mcp-server/Dockerfile
+          context: mcp-client
+          file: mcp-client/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
