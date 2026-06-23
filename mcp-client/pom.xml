@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Standalone project — no shared parent POM required -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -12,15 +13,9 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>mcp-apps-server</artifactId>
+    <artifactId>mcp-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <description>
-        MCP Apps root project.
-        Separate standalone Maven projects live in:
-          mcp-server/  — MCP Server (port 3001)
-          mcp-client/  — MCP Client / Orchestrator (port 3002)
-        Each project has its own pom.xml and can be built/run independently.
-    </description>
+    <description>MCP Client / Orchestrator — connects to MCP servers and exposes a REST orchestration API</description>
 
     <properties>
         <java.version>21</java.version>
@@ -44,15 +39,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- MCP Client (SSE + streamable-HTTP transport auto-configuration) -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
+            <artifactId>spring-ai-starter-mcp-client</artifactId>
         </dependency>
+
+        <!-- Swagger UI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.2.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
