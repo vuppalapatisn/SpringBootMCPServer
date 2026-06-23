@@ -12,20 +12,19 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>mcp-apps-parent</artifactId>
+    <artifactId>mcp-apps-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <description>MCP Apps - Parent POM</description>
-
-    <modules>
-        <module>mcp-server</module>
-        <module>mcp-client</module>
-    </modules>
+    <description>
+        MCP Apps root project.
+        Separate standalone Maven projects live in:
+          mcp-server/  — MCP Server (port 3001)
+          mcp-client/  — MCP Client / Orchestrator (port 3002)
+        Each project has its own pom.xml and can be built/run independently.
+    </description>
 
     <properties>
         <java.version>21</java.version>
         <spring-ai.version>1.0.1</spring-ai.version>
-        <springdoc.version>2.2.0</springdoc.version>
     </properties>
 
     <dependencyManagement>
@@ -39,6 +38,27 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <repositories>
         <repository>
@@ -57,5 +77,14 @@
             <snapshots><enabled>false</enabled></snapshots>
         </pluginRepository>
     </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
