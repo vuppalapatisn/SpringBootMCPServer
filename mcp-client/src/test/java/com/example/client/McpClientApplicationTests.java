@@ -1,14 +1,16 @@
 package com.example.client;
 
+import com.example.client.service.McpOrchestrationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-// Disable MCP client auto-connect during tests (no server running in CI)
+/**
+ * Context-load smoke test.
+ * McpOrchestrationService is mocked so no real MCP server connection is needed in CI.
+ */
 @SpringBootTest
-@TestPropertySource(properties = {
-    "spring.ai.mcp.client.sse.connections.mcp-server.url=http://localhost:9999"
-})
+@MockitoBean(types = McpOrchestrationService.class)
 class McpClientApplicationTests {
 
     @Test
