@@ -12,13 +12,20 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>mcp-apps-server</artifactId>
+    <artifactId>mcp-apps-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <description>mcp-apps-server</description>
+    <packaging>pom</packaging>
+    <description>MCP Apps - Parent POM</description>
+
+    <modules>
+        <module>mcp-server</module>
+        <module>mcp-client</module>
+    </modules>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>21</java.version>
         <spring-ai.version>1.0.1</spring-ai.version>
+        <springdoc.version>2.2.0</springdoc.version>
     </properties>
 
     <dependencyManagement>
@@ -33,43 +40,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <!-- implementation 'org.springframework.boot:spring-boot-starter-webmvc' -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webmvc' -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
-        </dependency>
-
-        <!-- Swagger / OpenAPI (springdoc) -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.2.0</version>
-        </dependency>
-
-        <!-- testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test' -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- testRuntimeOnly 'org.junit.platform:junit-platform-launcher' -->
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <repositories>
-        <!-- Spring Milestones — needed for Spring AI 1.0.0 GA -->
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
@@ -86,14 +57,5 @@
             <snapshots><enabled>false</enabled></snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
