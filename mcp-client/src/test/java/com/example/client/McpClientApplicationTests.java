@@ -7,11 +7,15 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 /**
  * Context-load smoke test.
- * McpOrchestrationService is mocked so no real MCP server connection is needed in CI.
+ * McpOrchestrationService is mocked as a field so no real MCP server
+ * connection is needed in CI. @MockitoBean must be a field annotation —
+ * class-level 'types' attribute does not exist in Spring Framework 6.2.
  */
 @SpringBootTest
-@MockitoBean(types = McpOrchestrationService.class)
 class McpClientApplicationTests {
+
+    @MockitoBean
+    McpOrchestrationService mcpOrchestrationService;
 
     @Test
     void contextLoads() {
