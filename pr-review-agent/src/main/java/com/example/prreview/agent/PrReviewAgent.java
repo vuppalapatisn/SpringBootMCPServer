@@ -5,7 +5,21 @@ import com.example.prreview.model.ReviewResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.ChatChoice;
+import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ChatCompletionsFunctionToolCall;
+import com.azure.ai.inference.models.ChatCompletionsFunctionToolDefinition;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatCompletionsToolCall;
+import com.azure.ai.inference.models.ChatCompletionsToolDefinition;
+import com.azure.ai.inference.models.ChatRequestAssistantMessage;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestSystemMessage;
+import com.azure.ai.inference.models.ChatRequestToolMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.ChatResponseMessage;
+import com.azure.ai.inference.models.CompletionsFinishReason;
+import com.azure.ai.inference.models.FunctionDefinition;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import io.modelcontextprotocol.client.McpClient;
@@ -105,10 +119,10 @@ public class PrReviewAgent {
             for (int iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
                 log.debug("Agent iteration {}", iteration + 1);
 
+                // setToolChoice is omitted — when tools are provided the default is auto
                 ChatCompletionsOptions options = new ChatCompletionsOptions(messages)
                     .setModel(model)
-                    .setTools(toolDefs)
-                    .setToolChoice(ChatCompletionsToolChoicePreset.AUTO);
+                    .setTools(toolDefs);
 
                 ChatCompletions response = aiClient.complete(options);
                 ChatChoice choice = response.getChoices().get(0);
@@ -139,7 +153,8 @@ public class PrReviewAgent {
                             prTitle = extractPrTitle(toolResult);
                         }
 
-                        messages.add(new ChatRequestToolMessage(toolResult, tc.getId()));
+                        messages.add(new ChatRequestToolMessage(toolResult)
+                            .setToolCallId(tc.getId()));
                     }
 
                 } else {
