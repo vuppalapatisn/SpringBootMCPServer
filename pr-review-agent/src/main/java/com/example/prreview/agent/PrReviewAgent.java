@@ -153,9 +153,9 @@ public class PrReviewAgent {
                             prTitle = extractPrTitle(toolResult);
                         }
 
-                        // beta.5: constructor takes toolCallId; content set via setContent(BinaryData)
+                        // beta.5: constructor takes toolCallId; content set via setContent(String)
                         messages.add(new ChatRequestToolMessage(tc.getId())
-                            .setContent(BinaryData.fromString(toolResult)));
+                            .setContent(toolResult));
                     }
 
                 } else {
